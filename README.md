@@ -1,6 +1,6 @@
-# 🔍 Port Killer
+# Port Killer
 
-> **Identify which process is using a port on Windows**
+> Identify which process is using a port on Windows
 
 A lightweight CLI tool that helps developers quickly find processes listening on TCP ports.
 
@@ -10,17 +10,17 @@ A lightweight CLI tool that helps developers quickly find processes listening on
 
 ---
 
-## ✨ Features
+## Features
 
-- 🎯 **Simple**: One command to find port conflicts
-- ⚡ **Fast**: Native Windows API integration
-- 🔒 **Safe**: Read-only inspection (no process termination)
-- 📦 **Portable**: Single executable, no dependencies
-- 🌐 **IPv6 Ready**: Supports both IPv4 and IPv6 TCP listeners
+- **Simple**: One command to find port conflicts
+- **Fast**: Native Windows API integration
+- **Safe**: Read-only inspection (no process termination)
+- **Portable**: Single executable, no dependencies
+- **IPv6 Ready**: Supports both IPv4 and IPv6 TCP listeners
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 port-killer 8080
@@ -46,7 +46,7 @@ Note: This tool inspects only. No processes will be terminated.
 
 ---
 
-## 📥 Installation
+## Installation
 
 ### Build from Source
 
@@ -62,24 +62,24 @@ cmake --build . --config Release
 
 ---
 
-## 💡 Use Cases
+## Use Cases
 
-- 🐛 **Debug port conflicts** during development
-- 🔍 **Identify mystery processes** using common ports
-- 🛠️ **Quick troubleshooting** for "address already in use" errors
+- **Debug port conflicts** during development
+- **Identify mystery processes** using common ports
+- **Quick troubleshooting** for "address already in use" errors
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] **v0.1** - TCP port inspection (IPv4)
-- [x] **v0.2** - IPv6 support ✨ NEW!
+- [x] **v0.2** - IPv6 support (NEW!)
 - [ ] **v0.3** - Interactive process termination
 - [ ] **v0.4** - UDP inspection
 
 ---
 
-## ⚠️ Current Limitations
+## Current Limitations
 
 - **TCP only** (no UDP yet)
 - **Inspection only** (cannot terminate processes)
@@ -87,19 +87,19 @@ cmake --build . --config Release
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Found a bug? Have a feature request? [Open an issue](https://github.com/bamites1-sketch/port-killer/issues)!
 
 ---
 
-## 📜 License
+## License
 
 MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 
 ---
 
-## 🛠️ Built With
+## Built With
 
 - **C++17** - Modern C++ standards
 - **Windows API** - Native IP Helper API (IPv4 & IPv6)
@@ -110,7 +110,7 @@ MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 
 <div align="center">
 
-**Made with ❤️ for developers who hate port conflicts**
+**Made for developers who hate port conflicts**
 
 [Report Bug](https://github.com/bamites1-sketch/port-killer/issues) · [Request Feature](https://github.com/bamites1-sketch/port-killer/issues) · [View Actions](https://github.com/bamites1-sketch/port-killer/actions)
 
