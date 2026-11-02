@@ -46,10 +46,7 @@ Note: This tool inspects only. No processes will be terminated.
 
 ## 📥 Installation
 
-### Option 1: Download Pre-built Binary
-Download from [Releases](https://github.com/bamites1-sketch/port-killer/releases) (coming soon)
-
-### Option 2: Build from Source
+### Build from Source
 
 **Requirements:** Windows 10/11, CMake 3.20+, MSVC or MinGW
 
