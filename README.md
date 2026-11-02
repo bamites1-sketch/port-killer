@@ -1,4 +1,4 @@
-# 🔍 Port Killer
+# Port Killer
 
 > **Identify which process is using a port on Windows**
 
@@ -10,16 +10,16 @@ A lightweight CLI tool that helps developers quickly find processes listening on
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🎯 **Simple**: One command to find port conflicts
-- ⚡ **Fast**: Native Windows API integration
-- 🔒 **Safe**: Read-only inspection (no process termination)
-- 📦 **Portable**: Single executable, no dependencies
+-  **Simple**: One command to find port conflicts
+-  **Fast**: Native Windows API integration
+-  **Safe**: Read-only inspection (no process termination)
+-  **Portable**: Single executable, no dependencies
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ```bash
 port-killer 8080
@@ -44,7 +44,7 @@ Note: This tool inspects only. No processes will be terminated.
 
 ---
 
-## 📥 Installation
+##  Installation
 
 ### Build from Source
 
@@ -60,15 +60,15 @@ cmake --build . --config Release
 
 ---
 
-## 💡 Use Cases
+##  Use Cases
 
-- 🐛 **Debug port conflicts** during development
-- 🔍 **Identify mystery processes** using common ports
-- 🛠️ **Quick troubleshooting** for "address already in use" errors
+-  **Debug port conflicts** during development
+-  **Identify mystery processes** using common ports
+-  **Quick troubleshooting** for "address already in use" errors
 
 ---
 
-## 🗺️ Roadmap
+##  Roadmap
 
 - [x] **v0.1** - TCP port inspection (IPv4)
 - [ ] **v0.2** - Interactive process termination
@@ -77,7 +77,7 @@ cmake --build . --config Release
 
 ---
 
-## ⚠️ Current Limitations
+##  Current Limitations
 
 - **IPv4 only** (IPv6 coming soon)
 - **TCP only** (no UDP yet)
@@ -86,13 +86,13 @@ cmake --build . --config Release
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Found a bug? Have a feature request? [Open an issue](https://github.com/bamites1-sketch/port-killer/issues)!
 
 ---
 
-## 📜 License
+##  License
 
 MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 
@@ -109,7 +109,7 @@ MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 
 <div align="center">
 
-**Made with ❤️ for developers who hate port conflicts**
+**Made for developers who hate port conflicts**
 
 [Report Bug](https://github.com/bamites1-sketch/port-killer/issues) · [Request Feature](https://github.com/bamites1-sketch/port-killer/issues) · [View Actions](https://github.com/bamites1-sketch/port-killer/actions)
 
