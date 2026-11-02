@@ -1,0 +1,56 @@
+name: Windows Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        build_type: [Release, Debug]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup MSVC
+      uses: microsoft/setup-msbuild@v2
+    
+    - name: Configure CMake
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+    
+    - name: Build
+      run: cmake --build build --config ${{ matrix.build_type }}
+    
+    - name: Test executable exists
+      shell: pwsh
+      run: |
+        $exePath = "build/${{ matrix.build_type }}/port-killer.exe"
+        if (Test-Path $exePath) {
+          Write-Host "✓ Executable built successfully: $exePath"
+          Get-Item $exePath | Format-List Name, Length, LastWriteTime
+        } else {
+          # Fallback: check build directory for any port-killer.exe
+          $found = Get-ChildItem -Path build -Filter "port-killer.exe" -Recurse -ErrorAction SilentlyContinue
+          if ($found) {
+            Write-Host "✓ Executable found at: $($found.FullName)"
+            $found | Format-List Name, Length, LastWriteTime
+          } else {
+            Write-Error "✗ Executable not found"
+            exit 1
+          }
+        }
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: port-killer-windows-${{ matrix.build_type }}
+        path: |
+          build/**/*.exe
+        retention-days: 7
