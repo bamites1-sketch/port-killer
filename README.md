@@ -1,4 +1,4 @@
-# Port Killer
+# 🔍 Port Killer
 
 > **Identify which process is using a port on Windows**
 
@@ -10,16 +10,17 @@ A lightweight CLI tool that helps developers quickly find processes listening on
 
 ---
 
-##  Features
+## ✨ Features
 
--  **Simple**: One command to find port conflicts
--  **Fast**: Native Windows API integration
--  **Safe**: Read-only inspection (no process termination)
--  **Portable**: Single executable, no dependencies
+- 🎯 **Simple**: One command to find port conflicts
+- ⚡ **Fast**: Native Windows API integration
+- 🔒 **Safe**: Read-only inspection (no process termination)
+- 📦 **Portable**: Single executable, no dependencies
+- 🌐 **IPv6 Ready**: Supports both IPv4 and IPv6 TCP listeners
 
 ---
 
-##  Quick Start
+## 🚀 Quick Start
 
 ```bash
 port-killer 8080
@@ -28,23 +29,24 @@ port-killer 8080
 **Output:**
 ```
 ====================================
-      PORT INSPECTOR v0.1.0
+      PORT INSPECTOR v0.2.0
 ====================================
 
 Inspecting TCP port 8080...
 
-Found 1 listener(s) on port 8080:
+Found 2 listener(s) on port 8080:
 
-Local Address        Port    PID       Process Name
---------------------------------------------------------------------
-0.0.0.0              8080    12345     node.exe
+Local Address                            Port    Type    PID       Process Name
+------------------------------------------------------------------------------------------------
+0.0.0.0                                  8080    IPv4    12345     node.exe
+::                                       8080    IPv6    12345     node.exe
 
 Note: This tool inspects only. No processes will be terminated.
 ```
 
 ---
 
-##  Installation
+## 📥 Installation
 
 ### Build from Source
 
@@ -60,39 +62,38 @@ cmake --build . --config Release
 
 ---
 
-##  Use Cases
+## 💡 Use Cases
 
--  **Debug port conflicts** during development
--  **Identify mystery processes** using common ports
--  **Quick troubleshooting** for "address already in use" errors
+- 🐛 **Debug port conflicts** during development
+- 🔍 **Identify mystery processes** using common ports
+- 🛠️ **Quick troubleshooting** for "address already in use" errors
 
 ---
 
-##  Roadmap
+## 🗺️ Roadmap
 
 - [x] **v0.1** - TCP port inspection (IPv4)
-- [ ] **v0.2** - Interactive process termination
-- [ ] **v0.3** - IPv6 support
+- [x] **v0.2** - IPv6 support ✨ NEW!
+- [ ] **v0.3** - Interactive process termination
 - [ ] **v0.4** - UDP inspection
 
 ---
 
-##  Current Limitations
+## ⚠️ Current Limitations
 
-- **IPv4 only** (IPv6 coming soon)
 - **TCP only** (no UDP yet)
 - **Inspection only** (cannot terminate processes)
 - Windows 10/11 only
 
 ---
 
-##  Contributing
+## 🤝 Contributing
 
 Found a bug? Have a feature request? [Open an issue](https://github.com/bamites1-sketch/port-killer/issues)!
 
 ---
 
-##  License
+## 📜 License
 
 MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 
@@ -101,7 +102,7 @@ MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 ## 🛠️ Built With
 
 - **C++17** - Modern C++ standards
-- **Windows API** - Native IP Helper API
+- **Windows API** - Native IP Helper API (IPv4 & IPv6)
 - **CMake** - Cross-compiler build system
 - **GitHub Actions** - Automated CI/CD
 
@@ -109,7 +110,7 @@ MIT © [bamites1-sketch](https://github.com/bamites1-sketch)
 
 <div align="center">
 
-**Made for developers who hate port conflicts**
+**Made with ❤️ for developers who hate port conflicts**
 
 [Report Bug](https://github.com/bamites1-sketch/port-killer/issues) · [Request Feature](https://github.com/bamites1-sketch/port-killer/issues) · [View Actions](https://github.com/bamites1-sketch/port-killer/actions)
 

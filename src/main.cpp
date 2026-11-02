@@ -12,7 +12,7 @@ void print_usage(const char* program_name) {
 
 int main(int argc, char* argv[]) {
     std::cout << "====================================\n";
-    std::cout << "      PORT INSPECTOR v0.1.0\n";
+    std::cout << "      PORT INSPECTOR v0.2.0\n";
     std::cout << "====================================\n\n";
 
     // Check command-line arguments
@@ -54,18 +54,20 @@ int main(int argc, char* argv[]) {
 
     // Print table header
     std::cout << std::left 
-              << std::setw(20) << "Local Address"
+              << std::setw(40) << "Local Address"
               << std::setw(8) << "Port"
+              << std::setw(8) << "Type"
               << std::setw(10) << "PID"
               << std::setw(30) << "Process Name"
               << "\n";
-    std::cout << std::string(68, '-') << "\n";
+    std::cout << std::string(96, '-') << "\n";
 
     // Print each listener
     for (const auto& listener : inspection.listeners) {
         std::cout << std::left
-                  << std::setw(20) << listener.local_address
+                  << std::setw(40) << listener.local_address
                   << std::setw(8) << listener.local_port
+                  << std::setw(8) << (listener.is_ipv6 ? "IPv6" : "IPv4")
                   << std::setw(10) << listener.process_id
                   << std::setw(30) << (listener.process_name.empty() 
                       ? "[unable to retrieve]" 

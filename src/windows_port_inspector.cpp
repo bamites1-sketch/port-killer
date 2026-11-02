@@ -20,7 +20,7 @@
 
 namespace portkiller {
 
-std::string WindowsPortInspector::ip_to_string(uint32_t ip_address) {
+std::string WindowsPortInspector::ipv4_to_string(uint32_t ip_address) {
     // IP addresses in the table are stored in network byte order (big-endian)
     // We need to extract each byte
     unsigned char byte1 = (ip_address) & 0xFF;
@@ -34,6 +34,23 @@ std::string WindowsPortInspector::ip_to_string(uint32_t ip_address) {
         << static_cast<int>(byte3) << "."
         << static_cast<int>(byte4);
     
+    return oss.str();
+}
+
+std::string WindowsPortInspector::ipv6_to_string(const unsigned char* ipv6_address) {
+    // Convert 16-byte IPv6 address to standard string format
+    // Format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx
+    std::ostringstream oss;
+    
+    for (int i = 0; i < 16; i += 2) {
+        if (i > 0) oss << ":";
+        
+        // Combine two bytes into one hex value
+        unsigned int value = (ipv6_address[i] << 8) | ipv6_address[i + 1];
+        oss << std::hex << value;
+    }
+    
+    // TODO: Could add zero compression (:: notation) for cleaner output
     return oss.str();
 }
 
@@ -88,6 +105,34 @@ std::string WindowsPortInspector::get_process_name(uint32_t pid) {
 }
 
 InspectionResult WindowsPortInspector::find_listeners(int port) {
+    // Query both IPv4 and IPv6 listeners
+    auto ipv4_result = find_ipv4_listeners(port);
+    auto ipv6_result = find_ipv6_listeners(port);
+    
+    // Combine results
+    std::vector<TcpListener> all_listeners;
+    
+    if (ipv4_result.success) {
+        all_listeners.insert(all_listeners.end(), 
+            ipv4_result.listeners.begin(), 
+            ipv4_result.listeners.end());
+    }
+    
+    if (ipv6_result.success) {
+        all_listeners.insert(all_listeners.end(), 
+            ipv6_result.listeners.begin(), 
+            ipv6_result.listeners.end());
+    }
+    
+    // If both failed, return the IPv4 error (primary)
+    if (!ipv4_result.success && !ipv6_result.success) {
+        return ipv4_result;
+    }
+    
+    return {true, all_listeners, ""};
+}
+
+InspectionResult WindowsPortInspector::find_ipv4_listeners(int port) {
     // Convert port to network byte order (big-endian) for comparison
     // Windows stores ports in network byte order
     uint16_t target_port = htons(static_cast<uint16_t>(port));
@@ -136,10 +181,72 @@ InspectionResult WindowsPortInspector::find_listeners(int port) {
         // Check if this listener matches our target port
         if (row.dwLocalPort == target_port) {
             TcpListener listener;
-            listener.local_address = ip_to_string(row.dwLocalAddr);
+            listener.local_address = ipv4_to_string(row.dwLocalAddr);
             listener.local_port = ntohs(static_cast<uint16_t>(row.dwLocalPort));
             listener.process_id = row.dwOwningPid;
             listener.process_name = get_process_name(row.dwOwningPid);
+            listener.is_ipv6 = false;
+
+            found_listeners.push_back(listener);
+        }
+    }
+
+    return {true, found_listeners, ""};
+}
+
+InspectionResult WindowsPortInspector::find_ipv6_listeners(int port) {
+    // Convert port to network byte order (big-endian) for comparison
+    uint16_t target_port = htons(static_cast<uint16_t>(port));
+
+    // First call: find out how much memory we need for IPv6 table
+    DWORD table_size = 0;
+    DWORD result = GetExtendedTcpTable(
+        nullptr,
+        &table_size,
+        FALSE,
+        AF_INET6,  // IPv6
+        TCP_TABLE_OWNER_PID_LISTENER,
+        0
+    );
+
+    if (result != ERROR_INSUFFICIENT_BUFFER) {
+        // IPv6 might not be available on some systems, return empty result
+        return {true, {}, ""};
+    }
+
+    // Allocate memory for the IPv6 table
+    std::vector<char> buffer(table_size);
+    auto* tcp_table = reinterpret_cast<MIB_TCP6TABLE_OWNER_PID*>(buffer.data());
+
+    // Second call: actually get the IPv6 data
+    result = GetExtendedTcpTable(
+        tcp_table,
+        &table_size,
+        FALSE,
+        AF_INET6,
+        TCP_TABLE_OWNER_PID_LISTENER,
+        0
+    );
+
+    if (result != NO_ERROR) {
+        // IPv6 query failed, return empty (not an error, might just be disabled)
+        return {true, {}, ""};
+    }
+
+    // Search through all IPv6 TCP listeners for matching port
+    std::vector<TcpListener> found_listeners;
+
+    for (DWORD i = 0; i < tcp_table->dwNumEntries; ++i) {
+        const auto& row = tcp_table->table[i];
+
+        // Check if this listener matches our target port
+        if (row.dwLocalPort == target_port) {
+            TcpListener listener;
+            listener.local_address = ipv6_to_string(row.ucLocalAddr);
+            listener.local_port = ntohs(static_cast<uint16_t>(row.dwLocalPort));
+            listener.process_id = row.dwOwningPid;
+            listener.process_name = get_process_name(row.dwOwningPid);
+            listener.is_ipv6 = true;
 
             found_listeners.push_back(listener);
         }
